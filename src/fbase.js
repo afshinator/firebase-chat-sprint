@@ -4,7 +4,7 @@ import "firebase/auth";
 
 import React from 'react'
 
-import keys from "./secrets"
+import keys from "./secrets"    // Get your own key from firebase
 
 firebase.initializeApp(keys);
 
