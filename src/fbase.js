@@ -4,15 +4,9 @@ import "firebase/auth";
 
 import React from 'react'
 
-firebase.initializeApp({
-  apiKey: "AIzaSyApy6zXnsOPXDwFvply7Nqu8qGFtxFgYFc",
-  authDomain: "react-chat-ddecd.firebaseapp.com",
-  databaseURL: "https://react-chat-ddecd.firebaseio.com",
-  projectId: "react-chat-ddecd",
-  storageBucket: "react-chat-ddecd.appspot.com",
-  messagingSenderId: "578831107597",
-  appId: "1:578831107597:web:065fc4c635b95feb1db744",
-});
+import keys from "./secrets"
+
+firebase.initializeApp(keys);
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
