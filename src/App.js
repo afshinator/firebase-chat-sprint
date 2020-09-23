@@ -1,36 +1,21 @@
 import React, { useRef, useState } from 'react';
 import './App.css';
 
-import firebase from 'firebase/app'
-import 'firebase/firestore'
-import 'firebase/auth'
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import firebase from "firebase/app";
+import {auth, firestore, SignOut, SignIn } from './fbase'
 
-firebase.initializeApp({
-  apiKey: "AIzaSyApy6zXnsOPXDwFvply7Nqu8qGFtxFgYFc",
-  authDomain: "react-chat-ddecd.firebaseapp.com",
-  databaseURL: "https://react-chat-ddecd.firebaseio.com",
-  projectId: "react-chat-ddecd",
-  storageBucket: "react-chat-ddecd.appspot.com",
-  messagingSenderId: "578831107597",
-  appId: "1:578831107597:web:065fc4c635b95feb1db744",
-})
-
-
-const auth = firebase.auth();
-const firestore = firebase.firestore();
-// const analytics = firebase.analytics();
 
 function App() {
-
   const [user] = useAuthState(auth);
 
   return (
     <div className="App">
+
       <header>
-        <h1><span role="img" aria-label="fire">⚛️🔥💬</span></h1>
+        <h1><span role="img" aria-label="fire">React-Firebase-Chat ⚛️🔥💬</span></h1>
         <SignOut />
       </header>
 
@@ -42,31 +27,10 @@ function App() {
   );
 }
 
-function SignIn() {
-
-  const signInWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
-  }
-
-  return (
-    <>
-      <button className="sign-in" onClick={signInWithGoogle}>Sign in with Google</button>
-      <p>Do not violate the community guidelines or you will be banned for life!</p>
-    </>
-  )
-
-}
-
-function SignOut() {
-  return auth.currentUser && (
-    <button className="sign-out" onClick={() => auth.signOut()}>Sign Out</button>
-  )
-}
 
 
 function ChatRoom() {
-  const dummy = useRef();
+  const dummy = useRef(); // to enable scrolling down to bottom, extra div and this ref...
   const messagesRef = firestore.collection('messages');
   const query = messagesRef.orderBy('createdAt').limit(25);
 
@@ -93,20 +57,16 @@ function ChatRoom() {
 
   return (<>
     <main>
-
       {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-
       <span ref={dummy}></span>
-
     </main>
 
     <form onSubmit={sendMessage}>
-
       <input value={formValue} onChange={(e) => setFormValue(e.target.value)} 
-      placeholder="say something nice" />
-
-      <button type="submit" disabled={!formValue}>🕊️</button>
-
+      placeholder="speak mind here" />
+      <button type="submit" disabled={!formValue}>
+        <span role="img" aria-label="submit">🕊️</span>
+        </button>
     </form>
   </>)
 }
@@ -119,7 +79,7 @@ function ChatMessage(props) {
 
   return (<>
     <div className={`message ${messageClass}`}>
-      <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} />
+      <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} alt="chat user" />
       <p>{text}</p>
     </div>
   </>)
