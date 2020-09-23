@@ -1,3 +1,9 @@
+# Using React-JS to implement a quick and dirty Chat w/ Firebase
+
+⚛️🔥💬
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
